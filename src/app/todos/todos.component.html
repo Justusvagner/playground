@@ -1,0 +1,28 @@
+<div *ngIf="!loading">
+
+    <div class="filter">
+        <input 
+        type="text" 
+        placeholder="Filter todo by title..."
+        [(ngModel)]="searchString"
+        >
+    </div>
+
+<ul *ngIf="todosService.todos.length; else noTodos">
+    <li class="todo" *ngFor="let todo of todosService.todos | todosFilter:searchString; let i = index">
+        <span [class.done]="todo.completed">
+            <input type="checkbox" [checked]="todo.completed" (change)="onChange(todo.id)">
+            <strong>{{i + 1}} </strong>{{todo.title}}
+            <small>
+                {{todo.date | date}}
+                <button class="rm" (click)="removeTodo(todo.id)">&times;</button>
+            </small>
+        </span>
+    </li>
+</ul>
+
+<ng-template #noTodos>
+    <p>There are no Todos</p>
+</ng-template>
+</div>
+<p *ngIf="loading">Loading....</p>
